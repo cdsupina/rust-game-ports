@@ -60,7 +60,7 @@ pub fn build_system_sets(app: &mut App) {
         ConditionSet::new()
             .run_in_state(MovePlayer)
             .with_system(movement::movement)
-            .with_system(next_step::next_step)
+            .with_system(next_step::next_step::<{ Collisions }>)
             .into(),
     );
 
@@ -68,7 +68,7 @@ pub fn build_system_sets(app: &mut App) {
         ConditionSet::new()
             .run_in_state(Collisions)
             .with_system(collisions::collisions)
-            .with_system(next_step::next_step)
+            .with_system(next_step::next_step::<{ GenerateMonsterMoves }>)
             .into(),
     );
 
@@ -76,7 +76,7 @@ pub fn build_system_sets(app: &mut App) {
         ConditionSet::new()
             .run_in_state(GenerateMonsterMoves)
             .with_system(random_move::random_move)
-            .with_system(next_step::next_step)
+            .with_system(next_step::next_step::<{ MoveMonsters }>)
             .into(),
     );
 
@@ -84,7 +84,7 @@ pub fn build_system_sets(app: &mut App) {
         ConditionSet::new()
             .run_in_state(MoveMonsters)
             .with_system(movement::movement)
-            .with_system(next_step::next_step)
+            .with_system(next_step::next_step::<{ AwaitingInput }>)
             .into(),
     );
 }
