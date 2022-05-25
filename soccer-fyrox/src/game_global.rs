@@ -155,7 +155,7 @@ impl GameGlobal {
                         selection_change = -1;
                     }
                     if selection_change != 0 {
-                        self.play_sound(&mut scene, "move", &[]);
+                        self.play_sound(&mut scene, "move", []);
                         if let Some(MenuState::NumPlayers) = self.menu_state {
                             self.menu_num_players = if self.menu_num_players == 1 { 2 } else { 1 };
                         } else {
@@ -202,7 +202,7 @@ impl GameGlobal {
                     Difficulty => (1, self.menu_difficulty),
                 };
 
-                self.draw_image(scene, "menu", &[image_i1, image_i2], 0, 0, 0);
+                self.draw_image(scene, "menu", [image_i1, image_i2], 0, 0, 0);
             }
             Play => {
                 //
@@ -249,11 +249,11 @@ impl GameGlobal {
     // Draws the image (loads the texture, adds the node to the scene, and links it to the root).
     // This is difficult to name, since the semantics of bevy and a 2d game are different.
     //
-    fn draw_image(
+    fn draw_image<const T: usize>(
         &mut self,
         scene: &mut Scene,
         base: &str,
-        indexes: &[u8],
+        indexes: [u8; T],
         x: i16,
         y: i16,
         z: i16,
@@ -263,7 +263,7 @@ impl GameGlobal {
         scene.graph.link_nodes(background, self.root_node);
     }
 
-    fn play_sound(&self, scene: &mut Scene, base: &str, indexes: &[u8]) {
+    fn play_sound<const T: usize>(&self, scene: &mut Scene, base: &str, indexes: [u8; T]) {
         let base = "sounds/".to_string() + base;
         let sound = self.resources.sound(base, indexes);
 
@@ -279,7 +279,7 @@ impl GameGlobal {
         }
 
         let base = "music/".to_string() + base;
-        let sound = self.resources.sound(base, &[]);
+        let sound = self.resources.sound(base, []);
 
         self.music = Some(
             SoundBuilder::new(BaseBuilder::new())

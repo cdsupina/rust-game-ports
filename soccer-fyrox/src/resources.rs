@@ -57,7 +57,11 @@ impl Resources {
         Self { images, sounds }
     }
 
-    pub fn image<S: AsRef<str> + Display>(&self, base: S, indexes: &[u8]) -> Texture {
+    pub fn image<S: AsRef<str> + Display, const T: usize>(
+        &self,
+        base: S,
+        indexes: [u8; T],
+    ) -> Texture {
         if indexes.len() > 2 {
             panic!();
         }
@@ -78,7 +82,11 @@ impl Resources {
 
     // Substantially common with the above. May optionally base both on a shared API.
     //
-    pub fn sound<S: AsRef<str> + Display>(&self, base: S, indexes: &[u8]) -> SoundBufferResource {
+    pub fn sound<S: AsRef<str> + Display, const T: usize>(
+        &self,
+        base: S,
+        indexes: [u8; T],
+    ) -> SoundBufferResource {
         if indexes.len() > 1 {
             panic!();
         }
