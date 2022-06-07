@@ -1,3 +1,5 @@
+use std::any::Any;
+
 use crate::prelude::*;
 
 const ANCHOR: Vector2<f32> = Vector2::new(25., 37.);
@@ -347,6 +349,10 @@ impl Player {
 }
 
 impl Targetable for Player {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+
     fn active(&self, ball: &Ball) -> bool {
         //# Is ball within 400 pixels on the Y axis? If so I'll be considered active, meaning I'm currently doing
         //# something useful in the game like trying to get the ball. If I'm not active, I'll either mark another player,

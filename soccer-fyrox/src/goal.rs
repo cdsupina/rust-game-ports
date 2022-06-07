@@ -1,3 +1,5 @@
+use std::any::Any;
+
 use crate::prelude::*;
 
 #[my_actor_based]
@@ -25,6 +27,10 @@ impl Goal {
 }
 
 impl Targetable for Goal {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+
     fn active(&self, ball: &Ball) -> bool {
         //# Is ball within 500 pixels on the Y axis?
         (ball.vpos.y - self.vpos.y).abs() < 500.
