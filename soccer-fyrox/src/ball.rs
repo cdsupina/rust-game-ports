@@ -328,8 +328,10 @@ impl Ball {
 
                     let mut r = 0.;
 
+                    let target = target.load(&game.pools);
+
                     //# Decide how many times we're going to go through the loop - the more times, the more accurate
-                    let iterations = if team.human() && target.is_player() {
+                    let iterations = if team.human() && target.as_any().is::<Player>() {
                         8
                     } else {
                         1
@@ -339,7 +341,7 @@ impl Ball {
                         //# In the first loop, t will simply be the position of the targeted player or goal.
                         //# In subsequent loops (if there are any), it will represent a position which is at the
                         //# target's feet plus a bit further in whichever direction the player is currently pressing.
-                        let t = target.load(&game.pools).vpos() + angle_to_vec(ball_owner.dir) * r;
+                        let t = target.vpos() + angle_to_vec(ball_owner.dir) * r;
 
                         //# Get direction vector and distance between target pos and us
                         let (vek_copy, length) = safe_normalise(&(t - ball.vpos));
@@ -351,7 +353,7 @@ impl Ball {
                         r = HUMAN_PLAYER_WITHOUT_BALL_SPEED * steps(length) as f32
                     }
 
-                    target.clone()
+                    target
                 } else {
                     //# We're not targeting a player or goal, so just kick the ball straight ahead
 
@@ -369,11 +371,12 @@ impl Ball {
                         .min_by(|p1, p2| dist_key(&p1.vpos, &p2.vpos, ball.vpos + (vek * 250.)))
                         .unwrap();
 
-                    Target::Player(game.pools.players.handle_of(closest_player))
+                    closest_player
                 };
-                if let Target::Player(target) = target {
+                if let Some(player) = target.as_any().downcast_ref::<Player>() {
                     //# If we just kicked the ball towards a player, make that player the new active player for this team
-                    game.teams[ball_owner.team as usize].active_control_player = Some(target);
+                    game.teams[ball_owner.team as usize].active_control_player =
+                        Some(game.pools.players.handle_of(player));
                 }
 
                 // Reborrow mutably, otherwise there would be a mutable and immutable references to
