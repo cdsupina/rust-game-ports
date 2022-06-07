@@ -236,7 +236,7 @@ impl Player {
 
                         //# Alter length to choose a position in between the ball and whatever we're marking
                         //# We don't apply this behaviour for human teams - in that case we just run straight at the ball
-                        if player.mark.is_goal() {
+                        if player.mark.load(&game.pools).as_any().is::<Goal>() {
                             //# If I'm currently the goalie, get in between the ball and goal, and don't get too far
                             //# from the goal
                             length = 150_f32.min(length);

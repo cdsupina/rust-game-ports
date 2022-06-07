@@ -237,10 +237,12 @@ impl Game {
                         .active_control_player
                         .unwrap_or(Handle::NONE);
 
+                    let mark_is_goal = p.mark.load(&self.pools).as_any().is::<Goal>();
+
                     let is_p_match = p.team != team
                         && p.timer <= 0
                         && (!self.teams[other_team].human() || *p_h != other_active_p)
-                        && !p.mark.is_goal();
+                        && !mark_is_goal;
 
                     is_p_match.then_some((p_h, p.vpos))
                 })
