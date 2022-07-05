@@ -5,6 +5,7 @@ pub fn player_input(
     mut player_query: Query<&mut PointC, With<Player>>, //(1) (2)
     (map, key, mut camera): (Res<Map>, Option<Res<VirtualKeyCode>>, ResMut<Camera>),
 ) {
+    println!("player_input");
     if let Some(key) = key.as_deref() {
         let delta = match key {
             VirtualKeyCode::Left => Point::new(-1, 0),
@@ -22,6 +23,7 @@ pub fn player_input(
                 let destination = pos.0 + delta;
                 if map.can_enter_tile(destination) {
                     pos.0 = destination;
+                    println!("player moving camera");
                     camera.on_player_move(destination);
                 }
             }

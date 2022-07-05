@@ -7,6 +7,8 @@ pub fn collisions(
     player_query: Query<&PointC, With<Player>>,
     enemies_query: Query<(Entity, &PointC), With<Enemy>>,
 ) {
+    println!("collisions");
+
     // We can use Query#single() when it's guaranteed that an entity exists.
     let player_pos = player_query.single().0;
 

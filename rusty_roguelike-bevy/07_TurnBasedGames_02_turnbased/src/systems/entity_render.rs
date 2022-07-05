@@ -1,6 +1,10 @@
 use crate::prelude::*;
 
 pub fn entity_render(query: Query<(&PointC, &Render)>, camera: Res<Camera>) {
+    println!(
+        "entity_render, with offset: {},{}",
+        camera.top_y, camera.left_x
+    );
     let mut draw_batch = DrawBatch::new();
     draw_batch.target(1);
     let offset = Point::new(camera.left_x, camera.top_y);

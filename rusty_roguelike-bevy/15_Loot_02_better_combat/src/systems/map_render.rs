@@ -16,8 +16,8 @@ pub fn map_render(
             let idx = map_idx(x, y);
             // Note that the source project uses `|` (non-short-circuit operator), which is probably
             // a typo.
-            if map.in_bounds(pt)
-                && (player_fov.visible_tiles.contains(&pt) || map.revealed_tiles[idx])
+            if true
+            // map.in_bounds(pt) && (player_fov.visible_tiles.contains(&pt) || map.revealed_tiles[idx])
             {
                 let tint = if player_fov.visible_tiles.contains(&pt) {
                     WHITE

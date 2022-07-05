@@ -1,6 +1,7 @@
 use crate::prelude::*;
 
 pub fn random_move(mut movers: Query<&mut PointC, With<MovingRandomly>>, map: Res<Map>) {
+    println!("random_move");
     movers.iter_mut().for_each(|mut pos| {
         let mut rng = RandomNumberGenerator::new();
         let destination = match rng.range(0, 4) {
